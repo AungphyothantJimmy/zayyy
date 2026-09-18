@@ -6,7 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import ProductImage from "@/components/ProductImage";
 import ProductGrid from "@/components/ProductGrid";
 import Badge from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
+import AddToCartButton from "@/components/AddToCartButton";
 
 type ProductPageProps = {
   params: Promise<{ id: string }>;
@@ -85,12 +85,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <p className="text-sm text-gray-600">{product.description}</p>
 
           <div className="mt-auto pt-4">
-            <Button disabled size="lg" className="w-full sm:w-auto">
-              Add to cart — coming soon
-            </Button>
-            <p className="mt-2 text-xs text-gray-400">
-              Cart and checkout arrive in Phase 3.
-            </p>
+            <AddToCartButton productId={product.id} productName={product.name} inStock={inStock} />
           </div>
         </div>
       </div>
