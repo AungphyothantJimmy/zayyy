@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#g)"/>
+  <circle cx="300" cy="250" r="120" fill="rgba(255,255,255,0.15)"/>
+  <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4l1 2h3v1H5v-1h3l1-2H5a2 2 0 0 1-2-2V7Zm16 0H5v8h14V7Z" transform="translate(230 140) scale(3.4)" fill="#ffffff" fill-opacity="0.92" stroke="none"/>
+  <text x="300" y="470" font-family="system-ui, sans-serif" font-size="34" font-weight="600" fill="#ffffff" text-anchor="middle" opacity="0.95">UltraBook Pro 14</text>
+</svg>

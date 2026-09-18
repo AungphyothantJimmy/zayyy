@@ -4,7 +4,7 @@ import { getSessionUser } from "@/lib/auth";
 import AuthShell from "@/components/forms/AuthShell";
 import LoginForm from "@/components/forms/LoginForm";
 
-export const metadata: Metadata = { title: "Login | MarketHub" };
+export const metadata: Metadata = { title: "Login | Zayyy" };
 
 export default async function LoginPage() {
   const user = await getSessionUser();
@@ -13,7 +13,7 @@ export default async function LoginPage() {
   return (
     <AuthShell
       title="Welcome back"
-      subtitle="Login to your MarketHub account"
+      subtitle="Login to your Zayyy account"
     >
       <LoginForm />
     </AuthShell>

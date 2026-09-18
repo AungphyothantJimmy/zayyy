@@ -4,7 +4,7 @@ import { getSessionUser } from "@/lib/auth";
 import AuthShell from "@/components/forms/AuthShell";
 import RegisterForm from "@/components/forms/RegisterForm";
 
-export const metadata: Metadata = { title: "Register | MarketHub" };
+export const metadata: Metadata = { title: "Register | Zayyy" };
 
 export default async function RegisterPage() {
   const user = await getSessionUser();

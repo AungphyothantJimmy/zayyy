@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
   { href: "/shops", label: "Shops" },
+  { href: "/sell", label: "Sell" },
 ];
 
 export default async function Header() {
@@ -17,7 +18,7 @@ export default async function Header() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="shrink-0 text-xl font-bold text-blue-600">
-            MarketHub
+            Zayyy
           </Link>
 
           {/* Search */}

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MarketHub - Multi-Vendor Zayyy",
+  title: "Zayyy",
   description:
     "Buy and sell from multiple vendors in one Zayyy",
 };

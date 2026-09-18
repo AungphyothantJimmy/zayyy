@@ -12,7 +12,7 @@ export default function HomePage() {
             Shop from many vendors, all in one place
           </h1>
           <p className="mt-4 text-lg text-blue-100">
-            Hero starts and sells their own products on MarketHub. Browse,
+            Anyone can start and sell their own products on Zayyy. Browse,
             buy, and track your orders — all in one Zayyy.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">

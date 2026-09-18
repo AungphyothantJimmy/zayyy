@@ -1,6 +1,6 @@
 import { ComingSoonWithBack } from "@/components/ComingSoon";
 
-export const metadata = { title: "Cart | MarketHub" };
+export const metadata = { title: "Cart | Zayyy" };
 
 export default function CartPage() {
   return (
