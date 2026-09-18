@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSessionUser } from "@/lib/auth";
+import { getCart } from "@/lib/cart";
 import LogoutButton from "@/components/LogoutButton";
 
 const NAV_LINKS = [
@@ -11,6 +12,8 @@ const NAV_LINKS = [
 
 export default async function Header() {
   const user = await getSessionUser();
+  const cart = user ? await getCart(user.id) : null;
+  const itemCount = cart?.itemCount ?? 0;
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200">
@@ -77,6 +80,11 @@ export default async function Header() {
                      011.5 0z"
                 />
               </svg>
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                  {itemCount}
+                </span>
+              )}
             </Link>
 
             {/* Auth */}
