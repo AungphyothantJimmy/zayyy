@@ -76,7 +76,9 @@ export default function CheckoutForm({
         required
       />
       <Input
-        label="Address"
+        label="Shipping Address (Township)"
+        name="shippingTownship"
+        value={form.shippingTownship}
         onChange={handleChange}
         required
       />

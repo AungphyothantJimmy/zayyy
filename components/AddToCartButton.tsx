@@ -12,7 +12,7 @@ type AddToCartButtonProps = {
 
 export default function AddToCartButton({
   productId,
-   
+  productName,
   inStock,
 }: AddToCartButtonProps) {
   const router = useRouter();

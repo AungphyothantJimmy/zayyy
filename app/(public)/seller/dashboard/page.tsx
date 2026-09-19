@@ -48,7 +48,7 @@ export default async function SellerDashboardPage() {
         </Card>
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-4">
             <Card>
               <p className="text-sm text-gray-500">Total products</p>
               <p className="mt-1 text-3xl font-bold text-gray-900">
@@ -62,9 +62,30 @@ export default async function SellerDashboardPage() {
               </p>
             </Card>
             <Card>
-              <p className="text-sm text-gray-500">Drafts</p>
+              <p className="text-sm text-gray-500">Pending orders</p>
+              <p className="mt-1 text-3xl font-bold text-yellow-600">
+                {dashboard.pendingOrders}
+              </p>
+            </Card>
+            <Card>
+              <p className="text-sm text-gray-500">Completed orders</p>
+              <p className="mt-1 text-3xl font-bold text-blue-600">
+                {dashboard.completedOrders}
+              </p>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Card>
+              <p className="text-sm text-gray-500">Processing orders</p>
+              <p className="mt-1 text-3xl font-bold text-orange-600">
+                {dashboard.processingOrders}
+              </p>
+            </Card>
+            <Card>
+              <p className="text-sm text-gray-500">Total sales</p>
               <p className="mt-1 text-3xl font-bold text-gray-900">
-                {dashboard.draftProducts}
+                {formatPrice(dashboard.salesTotal.toString())}
               </p>
             </Card>
           </div>

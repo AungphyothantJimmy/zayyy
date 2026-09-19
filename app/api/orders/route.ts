@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuthOrApi } from "@/lib/guards";
-import { createOrder, getOrders } from "@/lib/order";
-import type { CheckoutInput } from "@/types";
+import { createOrder, getOrders, getOrderById } from "@/lib/order";
 
 export async function POST(request: Request) {
   const user = await requireAuthOrApi({ role: "CUSTOMER" });
@@ -9,11 +8,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  let body: CheckoutInput;
+  let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request body." },
+      { status: 400 },
+    );
   }
 
   const required = [
@@ -32,7 +34,7 @@ export async function POST(request: Request) {
     }
   }
 
-  if (!["cash_on_delivery"].includes(body.paymentMethod)) {
+  if (!["cash_on_delivery"].includes(body.paymentMethod as string)) {
     return NextResponse.json(
       { error: "Only cash_on_delivery is supported." },
       { status: 400 },
@@ -40,7 +42,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    const order = await createOrder(user.id, body);
+    const order = await createOrder(user.id, body as {
+      shippingName: string;
+      shippingPhone: string;
+      shippingCity: string;
+      shippingTownship: string;
+      shippingInstructions?: string;
+      paymentMethod: string;
+    });
     return NextResponse.json({ order }, { status: 201 });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Checkout failed.";

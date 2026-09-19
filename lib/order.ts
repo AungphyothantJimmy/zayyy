@@ -41,7 +41,7 @@ export async function createOrder(userId: string, input: CheckoutInput) {
       );
     }
     validItems.push({ item, product });
-    totalAmount += product.price.toNumber() * item.quantity;
+    totalAmount += Number(product.price) * item.quantity;
   }
 
   const result = await prisma.$transaction(async (tx) => {
@@ -64,8 +64,8 @@ export async function createOrder(userId: string, input: CheckoutInput) {
         productId: item.productId,
         shopId: product.shopId,
         quantity: item.quantity,
-        unitPrice: product.price,
-        subtotal: product.price.times(item.quantity),
+        unitPrice: Number(product.price),
+        subtotal: Number(product.price) * item.quantity,
       })),
     });
 
@@ -83,7 +83,7 @@ export async function createOrder(userId: string, input: CheckoutInput) {
       include: {
         items: {
           include: {
-            product: { select: { id: true, name: true } },
+            product: { select: { id: true, name: true, image: true } },
             shop: { select: { id: true, name: true } },
           },
         },
@@ -103,7 +103,7 @@ export async function getOrders(userId: string) {
     include: {
       items: {
         include: {
-          product: { select: { id: true, name: true } },
+          product: { select: { id: true, name: true, image: true } },
           shop: { select: { id: true, name: true } },
         },
       },
@@ -112,14 +112,14 @@ export async function getOrders(userId: string) {
 
   return orders.map((order) => ({
     ...order,
-    totalAmount: order.totalAmount.toNumber(),
+    totalAmount: Number(order.totalAmount),
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString(),
     itemCount: order.items.reduce((sum, i) => sum + i.quantity, 0),
     items: order.items.map((item) => ({
       ...item,
-      unitPrice: item.unitPrice.toNumber(),
-      subtotal: item.subtotal.toNumber(),
+      unitPrice: Number(item.unitPrice),
+      subtotal: Number(item.subtotal),
     })),
   }));
 }
@@ -130,7 +130,7 @@ export async function getOrderById(userId: string, orderId: string) {
     include: {
       items: {
         include: {
-          product: { select: { id: true, name: true } },
+          product: { select: { id: true, name: true, image: true } },
           shop: { select: { id: true, name: true } },
         },
       },
@@ -141,14 +141,14 @@ export async function getOrderById(userId: string, orderId: string) {
 
   return {
     ...order,
-    totalAmount: order.totalAmount.toNumber(),
+    totalAmount: Number(order.totalAmount),
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString(),
     itemCount: order.items.reduce((sum, i) => sum + i.quantity, 0),
     items: order.items.map((item) => ({
       ...item,
-      unitPrice: item.unitPrice.toNumber(),
-      subtotal: item.subtotal.toNumber(),
+      unitPrice: Number(item.unitPrice),
+      subtotal: Number(item.subtotal),
     })),
   };
 }

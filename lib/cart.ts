@@ -32,7 +32,7 @@ export async function getCart(userId: string) {
 
   const items: CartItemDto[] = cart.items.map((item) => {
     const product = productMap.get(item.productId)!;
-    const price = product.price.toNumber();
+    const price = Number(product.price);
     const subtotal = price * item.quantity;
     return {
       id: item.id,

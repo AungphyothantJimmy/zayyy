@@ -75,7 +75,14 @@ export type ProductQuery = {
   pageSize?: number;
 };
 
-export type OrderStatusDto = "PENDING" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+export type OrderStatusDto =
+  | "PENDING"
+  | "CONFIRMED"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
+
 export type PaymentStatusDto = "PENDING" | "PAID" | "FAILED" | "REFUNDED";
 export type PaymentMethodDto = "cash_on_delivery";
 
@@ -111,6 +118,27 @@ export type CartItemInput = {
   quantity: number;
 };
 
+export type OrderItemDto = {
+  id: string;
+  orderId: string;
+  productId: string;
+  shopId: string;
+  quantity: number;
+  unitPrice: number;
+  subtotal: number;
+  product: { id: string; name: string; image: string | null };
+  shop: { id: string; name: string };
+};
+
+export type CheckoutInput = {
+  shippingName: string;
+  shippingPhone: string;
+  shippingCity: string;
+  shippingTownship: string;
+  shippingInstructions?: string;
+  paymentMethod: string;
+};
+
 export type OrderDto = {
   id: string;
   userId: string;
@@ -127,25 +155,4 @@ export type OrderDto = {
   updatedAt: string;
   itemCount: number;
   items: OrderItemDto[];
-};
-
-export type OrderItemDto = {
-  id: string;
-  orderId: string;
-  productId: string;
-  shopId: string;
-  quantity: number;
-  unitPrice: number;
-  subtotal: number;
-  product: { id: string; name: string };
-  shop: { id: string; name: string };
-};
-
-export type CheckoutInput = {
-  shippingName: string;
-  shippingPhone: string;
-  shippingCity: string;
-  shippingTownship: string;
-  shippingInstructions?: string;
-  paymentMethod: string;
 };

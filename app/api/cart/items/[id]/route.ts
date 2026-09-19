@@ -1,75 +1,90 @@
 import { NextResponse } from "next/server";
 import { requireAuthOrApi } from "@/lib/guards";
 import { prisma } from "@/lib/prisma";
-import { getCart } from "@/lib/cart";
+import type { SessionUser } from "@/lib/auth";
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const user = await requireAuthOrApi({ role: "CUSTOMER" });
+type Params = { params: Promise<{ id: string }> };
+
+export async function PATCH(request: Request, { params }: Params) {
+  const user = await requireAuthOrApi();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
   const { id } = await params;
-  let body: { quantity: number };
+  let body: { quantity?: number };
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
-  }
-
-  if (!body.quantity || body.quantity < 0) {
     return NextResponse.json(
-      { error: "Quantity must be >= 0." },
+      { error: "Invalid request body." },
       { status: 400 },
     );
   }
 
-  const cart = await getCart(user.id);
-  const item = cart.items.find((i) => i.id === id);
-  if (!item) {
+  const cartItem = await prisma.cartItem.findUnique({
+    where: { id },
+    include: { product: true },
+  });
+
+  if (!cartItem) {
     return NextResponse.json({ error: "Cart item not found." }, { status: 404 });
   }
 
-  if (body.quantity === 0) {
-    await prisma.cartItem.delete({ where: { id } });
-  } else {
-    const product = await prisma.product.findUnique({ where: { id: item.productId } });
-    if (product && product.stock < body.quantity) {
-      return NextResponse.json(
-        { error: `Only ${product.stock} units available.` },
-        { status: 409 },
-      );
-    }
-    await prisma.cartItem.update({
-      where: { id },
-      data: { quantity: body.quantity },
-    });
+  const cart = await prisma.cart.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (!cart || cart.id !== cartItem.cartId) {
+    return NextResponse.json(
+      { error: "Cart item not found." },
+      { status: 404 },
+    );
   }
 
-  const updated = await getCart(user.id);
-  return NextResponse.json({ cart: updated });
+  if (body.quantity !== undefined && body.quantity < 1) {
+    return NextResponse.json(
+      { error: "Quantity must be at least 1." },
+      { status: 400 },
+    );
+  }
+
+  const updatedItem = await prisma.cartItem.update({
+    where: { id },
+    data: { quantity: body.quantity ?? cartItem.quantity + 1 },
+    include: { product: true },
+  });
+
+  return NextResponse.json({ item: updatedItem });
 }
 
-export async function DELETE(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const user = await requireAuthOrApi({ role: "CUSTOMER" });
+export async function DELETE(_request: Request, { params }: Params) {
+  const user = await requireAuthOrApi();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
   const { id } = await params;
-  const cart = await getCart(user.id);
-  const item = cart.items.find((i) => i.id === id);
-  if (!item) {
+
+  const cartItem = await prisma.cartItem.findUnique({
+    where: { id },
+  });
+
+  if (!cartItem) {
     return NextResponse.json({ error: "Cart item not found." }, { status: 404 });
   }
 
+  const cart = await prisma.cart.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (!cart || cart.id !== cartItem.cartId) {
+    return NextResponse.json(
+      { error: "Cart item not found." },
+      { status: 404 },
+    );
+  }
+
   await prisma.cartItem.delete({ where: { id } });
-  const updated = await getCart(user.id);
-  return NextResponse.json({ cart: updated });
+  return NextResponse.json({ ok: true });
 }

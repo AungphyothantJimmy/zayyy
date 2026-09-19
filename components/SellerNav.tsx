@@ -9,6 +9,7 @@ const NAV = [
   { href: "/seller/shop", label: "My Shop" },
   { href: "/seller/products", label: "Products" },
   { href: "/seller/products/new", label: "New Product" },
+  { href: "/seller/orders", label: "Orders" },
 ];
 
 export default function SellerNav() {
